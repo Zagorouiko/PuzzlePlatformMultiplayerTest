@@ -18,6 +18,9 @@ class PUZZLEPLATFORMS_API AMovingPlatform : public AStaticMeshActor
 public:
 	AMovingPlatform();
 
+	UPROPERTY(EditAnywhere)
+	float speed = 50;
+
 protected:
 	virtual void Tick(float DeltaTime) override;
 	
