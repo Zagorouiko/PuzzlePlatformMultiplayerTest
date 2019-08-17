@@ -18,6 +18,8 @@ class PUZZLEPLATFORMS_API AMovingPlatform : public AStaticMeshActor
 public:
 	AMovingPlatform();
 
+	virtual void BeingPlay();
+
 	UPROPERTY(EditAnywhere)
 	float speed = 50;
 
