@@ -23,6 +23,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	float speed = 50;
 
+	UPROPERTY(EditAnywhere, Meta = (MakeEditWidget = true))
+	FVector TargetLocation;
+
+
 protected:
 	virtual void Tick(float DeltaTime) override;
 	

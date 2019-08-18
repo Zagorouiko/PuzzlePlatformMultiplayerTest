@@ -19,6 +19,7 @@ void AMovingPlatform::BeingPlay() {
 	//}
 }
 
+
 void AMovingPlatform::Tick(float Deltatime) {
 	Super::Tick(Deltatime);
 
@@ -31,7 +32,10 @@ void AMovingPlatform::Tick(float Deltatime) {
 	FVector Location = GetActorLocation();
 
 	if (HasAuthority()) {
-		Location += FVector(speed * Deltatime, 0, 0);
+		//Converts local to global space for the B - A vector 
+		FVector GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation);
+		FVector direction = (GlobalTargetLocation - Location).GetSafeNormal();
+		Location += direction * (speed * Deltatime);
 		SetActorLocation(Location);
 	}
 
