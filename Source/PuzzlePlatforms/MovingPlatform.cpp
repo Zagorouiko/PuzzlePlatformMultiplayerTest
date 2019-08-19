@@ -10,13 +10,11 @@ AMovingPlatform::AMovingPlatform() {
 	SetMobility(EComponentMobility::Movable);
 }
 
-void AMovingPlatform::BeingPlay() {
+void AMovingPlatform::BeginPlay() {
 	Super::BeginPlay();
 
-	//if (HasAuthority()) {
-	//	SetReplicates(true);
-	//	SetReplicateMovement(true);
-	//}
+	GlobalStartLocation = GetActorLocation();
+	GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation);
 }
 
 
@@ -29,14 +27,24 @@ void AMovingPlatform::Tick(float Deltatime) {
 		SetReplicateMovement(true);
 	}
 
-	FVector Location = GetActorLocation();
+	//GlobalStartLocation = GetActorLocation();
+	//GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation);
 
 	if (HasAuthority()) {
 		//Converts local to global space for the B - A vector 
-		FVector GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation);
-		FVector direction = (GlobalTargetLocation - Location).GetSafeNormal();
-		Location += direction * (speed * Deltatime);
+		FVector Location = GetActorLocation();
+		float JourneyLength = (GlobalTargetLocation - GlobalStartLocation).Size();
+		float JourneyTraveled = (Location - GlobalStartLocation).Size();
+
+		if (JourneyTraveled >= JourneyLength) {
+			FVector Swap = GlobalStartLocation;
+			GlobalStartLocation = GlobalTargetLocation;
+			GlobalTargetLocation = Swap;
+		}
+		FVector direction = (GlobalTargetLocation - GlobalStartLocation).GetSafeNormal();
+		Location += speed * Deltatime * direction;
 		SetActorLocation(Location);
+
 	}
 
 	
