@@ -27,9 +27,6 @@ void AMovingPlatform::Tick(float Deltatime) {
 		SetReplicateMovement(true);
 	}
 
-	//GlobalStartLocation = GetActorLocation();
-	//GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation);
-
 	if (HasAuthority()) {
 		//Converts local to global space for the B - A vector 
 		FVector Location = GetActorLocation();
